@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -19,66 +19,51 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { data: session, isPending, refetch } = useSession();
-
-  const handleSignOut = async () => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("bearer_token") : "";
-    const { error } = await authClient.signOut({
-      fetchOptions: {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    });
-    if (!error?.code) {
-      localStorage.removeItem("bearer_token");
-      refetch();
-      router.push("/");
-    }
-  };
+  const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:py-4">
-        <Link href="/" className="font-semibold text-lg md:text-xl tracking-tight">
+    <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-7xl rounded-full bg-white/80 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3),0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
+      <div className="mx-auto flex items-center justify-between px-6 py-3">
+        <Link href="/" className="text-black font-bold text-xl tracking-tight font-sans">
           Techno Club
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => {
+        <nav className="hidden items-center gap-6 md:flex">
+          {navItems.slice(0, 4).map((item) => {
             const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-md px-3 py-2 text-sm transition-colors ${
-                  active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"
+                className={`text-sm font-medium transition-colors ${
+                  active ? "text-black" : "text-gray-700 hover:text-black"
                 }`}
               >
                 {item.label}
               </Link>
             );
           })}
-          {/* Auth actions */}
-          {!isPending && (
-            <div className="ml-2 flex items-center gap-2">
-              {session?.user ? (
-                <>
-                  <Link href="/articles/manage">
-                    <Button size="sm" variant="outline">Manage</Button>
-                  </Link>
-                  <Button size="sm" onClick={handleSignOut}>Sign out</Button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login">
-                    <Button size="sm">Login</Button>
-                  </Link>
-                  <Link href="/register">
-                    <Button size="sm" variant="outline">Register</Button>
-                  </Link>
-                </>
-              )}
+          <div className="flex items-center gap-4 ml-4">
+            <Link 
+              href="/about" 
+              className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+            >
+              About Us
+            </Link>
+            <Link 
+              href="/contact" 
+              className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+          {/* Auth actions - Only show manage for logged in users */}
+          {session?.user && (
+            <div className="ml-2">
+              <Link href="/articles/manage">
+                <Button size="sm" variant="outline">Manage Articles</Button>
+              </Link>
             </div>
           )}
         </nav>
@@ -87,48 +72,40 @@ export function Navbar() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="Open menu">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                aria-label="Open menu"
+                className="h-10 w-10 rounded-full bg-white/50 hover:bg-white/70"
+              >
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
-              <div className="mt-6 flex flex-col gap-2">
+            <SheetContent side="right" className="w-80 p-0 bg-white/95 backdrop-blur-lg">
+              <div className="h-full flex flex-col pt-16 px-6 gap-1">
                 {navItems.map((item) => {
                   const active = pathname === item.href;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`rounded-md px-3 py-2 text-base transition-colors ${
-                        active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"
+                      className={`rounded-lg px-4 py-3 text-base transition-colors ${
+                        active ? "bg-gray-100 text-black" : "text-gray-700 hover:bg-gray-50"
                       }`}
                     >
                       {item.label}
                     </Link>
                   );
                 })}
-                {/* Auth actions */}
-                {!isPending && (
-                  <div className="mt-4 border-t pt-4">
-                    {session?.user ? (
-                      <div className="flex flex-col gap-2">
-                        <Link href="/articles/manage" className="rounded-md px-3 py-2 text-base hover:underline">
-                          Manage Articles
-                        </Link>
-                        <button onClick={handleSignOut} className="rounded-md px-3 py-2 text-left text-base text-red-600 hover:underline">
-                          Sign out
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2">
-                        <Link href="/login" className="rounded-md px-3 py-2 text-base hover:underline">
-                          Login
-                        </Link>
-                        <Link href="/register" className="rounded-md px-3 py-2 text-base hover:underline">
-                          Register
-                        </Link>
-                      </div>
-                    )}
+                {/* Auth actions - Only show manage for logged in users */}
+                {session?.user && (
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <Link 
+                      href="/articles/manage" 
+                      className="block rounded-lg px-4 py-3 text-base hover:bg-gray-50 transition-colors"
+                    >
+                      Manage Articles
+                    </Link>
                   </div>
                 )}
               </div>

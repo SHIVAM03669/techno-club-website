@@ -32,7 +32,11 @@ export default function RootLayout({
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
         <Navbar />
-        {children}
+        <main className="min-h-[calc(100vh-200px)] pt-24 pb-16">
+          <div className="container mx-auto px-4">
+            {children}
+          </div>
+        </main>
         <Footer />
         <VisualEditsMessenger />
       </body>
