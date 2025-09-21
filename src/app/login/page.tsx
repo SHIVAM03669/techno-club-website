@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const params = useSearchParams();
   const [email, setEmail] = useState("");
@@ -97,5 +97,23 @@ export default function LoginPage() {
         <Link href="/signup" className="underline text-[#81ff00]">Create one</Link>
       </p>
     </main>
+  );
+}
+
+function LoginContentWithSearchParams() {
+  const params = useSearchParams();
+  const registered = params.get("registered") === "true";
+  const redirect = params.get("redirect") || "/articles/manage";
+
+  return (
+    <LoginContent />
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-md px-4 pt-32 pb-12 text-gray-300">Loading...</main>}>
+      <LoginContentWithSearchParams />
+    </Suspense>
   );
 }
