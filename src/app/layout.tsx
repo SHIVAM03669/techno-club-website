@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   title: "Techno Smart Campus Club",
   description:
     "Sustainability First, Innovation Drive, Collaborative Spirit, Impact Focused.",
+  icons: {
+    icon: [{ url: "/TSCC Logo (1).png", type: "image/png" }],
+    shortcut: ["/TSCC Logo (1).png"],
+    apple: ["/TSCC Logo (1).png"],
+  },
 };
 
 export default function RootLayout({
