@@ -85,8 +85,8 @@ const teamMembers = [
 ];
 
 export default function MembersPage() {
-  const featured = teamMembers.find((m) => m.name === 'Dr. Rajani Mam');
-  const others = teamMembers.filter((m) => m.name !== 'Dr. Rajani Mam');
+  const featured = teamMembers.find((m) => m.name === 'Dr. Rajani Sajjan');
+  const others = teamMembers.filter((m) => m.name !== 'Dr. Rajani Sajjan');
 
   return (
     <div
