@@ -28,7 +28,7 @@ const teamMembers = [
     department: 'Information Technology'
   },
   {
-    name: 'Raj Patel',
+    name: 'Raj Sharma',
     role: 'Technical Lead',
     image: '/raj.jpg',
     email: 'raj.patel@example.com',
