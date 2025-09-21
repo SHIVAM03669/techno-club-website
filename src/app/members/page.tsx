@@ -85,6 +85,9 @@ const teamMembers = [
 ];
 
 export default function MembersPage() {
+  const featured = teamMembers.find((m) => m.name === 'Dr. Rajani Mam');
+  const others = teamMembers.filter((m) => m.name !== 'Dr. Rajani Mam');
+
   return (
     <div
   className="min-h-screen pt-20 bg-cover bg-center"
@@ -117,6 +120,51 @@ export default function MembersPage() {
         </div>
       </motion.section>
 
+      {/* Featured Faculty Advisor */}
+      {featured && (
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="px-4 sm:px-6 lg:px-8"
+        >
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white/90 rounded-2xl p-6 border border-green-500/30 shadow-md">
+              <div className="text-center mb-4">
+                <div className="relative inline-block">
+                  <img
+                    src={featured.image}
+                    alt={featured.name}
+                    className="w-28 h-28 rounded-full object-cover mx-auto border-4 border-green-500/50"
+                  />
+                  <div className="absolute -bottom-2 -right-2 bg-green-500 rounded-full p-2">
+                    <Award className="w-4 h-4 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-2xl font-extrabold text-slate-900 mt-4">{featured.name}</h2>
+                <p className="text-green-600 font-semibold">{featured.role}</p>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <GraduationCap className="w-4 h-4 text-slate-500" />
+                  <span className="text-sm text-slate-500">{featured.year}</span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-sm text-slate-500">{featured.department}</span>
+                </div>
+              </div>
+              <p className="text-slate-600 text-sm leading-relaxed text-center max-w-2xl mx-auto">{featured.bio}</p>
+              <div className="flex items-center justify-center gap-4 pt-4 mt-4 border-t border-gray-200">
+                <a href={`mailto:${featured.email}`} className="p-2 bg-green-500/20 rounded-lg hover:bg-green-500/30 transition">
+                  <Mail className="w-4 h-4 text-green-600" />
+                </a>
+                <a href={featured.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition">
+                  <Linkedin className="w-4 h-4 text-blue-600" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
       {/* Team Members Grid */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -126,7 +174,7 @@ export default function MembersPage() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
+            {others.map((member, index) => (
               <motion.div
                 key={member.name}
                 initial={{ opacity: 0, y: 50 }}
