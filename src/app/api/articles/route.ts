@@ -47,20 +47,14 @@ export async function GET(request: NextRequest) {
     let conditions: any[] = [];
     
     if (user) {
+      // Authenticated users can see all articles. Apply optional filters.
       if (author === 'me') {
         conditions.push(eq(articles.authorId, user.id));
-      } else if (status === 'draft') {
-        conditions.push(eq(articles.authorId, user.id));
+      }
+      if (status === 'draft') {
         conditions.push(eq(articles.status, 'draft'));
       } else if (status === 'published') {
         conditions.push(eq(articles.status, 'published'));
-      } else {
-        conditions.push(
-          or(
-            eq(articles.status, 'published'),
-            and(eq(articles.authorId, user.id), eq(articles.status, 'draft'))
-          )
-        );
       }
     } else {
       if (author === 'me') {

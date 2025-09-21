@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { authClient, useSession } from "@/lib/auth-client";
 
 const navItems = [
-  { href: "/", label: "Home" },
+  { href: "/home", label: "Home" },
   { href: "/members", label: "Members" },
   { href: "/events", label: "Events" },
   { href: "/articles", label: "Articles" },
@@ -20,6 +20,19 @@ const navItems = [
 export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const handleLogout = async () => {
+    try {
+      await authClient.signOut();
+    } catch (e) {
+      // noop
+    } finally {
+      try {
+        localStorage.removeItem("bearer_token");
+        localStorage.removeItem("member_pin_ok");
+      } catch {}
+      window.location.href = "/";
+    }
+  };
 
   return (
     <header className="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-7xl rounded-full bg-white/80 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.3),0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
@@ -53,17 +66,19 @@ export function Navbar() {
             </Link>
             <Link 
               href="/contact" 
-              className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+              className="bg-[#81ff00] text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-[#a6d42b] transition-colors"
+
             >
               Contact
             </Link>
           </div>
           {/* Auth actions - Only show manage for logged in users */}
           {session?.user && (
-            <div className="ml-2">
+            <div className="ml-2 flex items-center gap-2">
               <Link href="/articles/manage">
                 <Button size="sm" variant="outline">Manage Articles</Button>
               </Link>
+              <Button size="sm" variant="ghost" onClick={handleLogout}>Logout</Button>
             </div>
           )}
         </nav>
@@ -99,13 +114,19 @@ export function Navbar() {
                 })}
                 {/* Auth actions - Only show manage for logged in users */}
                 {session?.user && (
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                     <Link 
                       href="/articles/manage" 
                       className="block rounded-lg px-4 py-3 text-base hover:bg-gray-50 transition-colors"
                     >
                       Manage Articles
                     </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left block rounded-lg px-4 py-3 text-base hover:bg-gray-50 transition-colors"
+                    >
+                      Logout
+                    </button>
                   </div>
                 )}
               </div>

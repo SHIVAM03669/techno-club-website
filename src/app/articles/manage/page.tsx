@@ -58,7 +58,6 @@ export default function ManageArticlesPage() {
 
   useEffect(() => {
     fetchMine();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteArticle = async (id: number) => {
@@ -103,9 +102,9 @@ export default function ManageArticlesPage() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <main className="mx-auto max-w-5xl px-4 pt-32 pb-12">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Manage Articles</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-white">Manage Articles</h1>
         <div className="flex gap-2">
           <Link href="/articles/new">
             <Button>New Article</Button>
@@ -116,9 +115,9 @@ export default function ManageArticlesPage() {
         </div>
       </div>
 
-      <Card className="mt-6">
+      <Card className="mt-6 rounded-xl bg-white/5 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
         <CardHeader>
-          <CardTitle className="text-lg">Your articles</CardTitle>
+          <CardTitle className="text-lg text-white">Your articles</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -126,12 +125,12 @@ export default function ManageArticlesPage() {
               placeholder="Search title..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full sm:w-64 rounded-md border bg-background px-3 py-2 text-sm"
+              className="w-full sm:w-64 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#81ff00]"
             />
             <div className="flex items-center gap-2">
-              <span className="text-sm">Status:</span>
+              <span className="text-sm text-gray-300">Status:</span>
               <select
-                className="rounded-md border bg-background px-2 py-1 text-sm"
+                className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-sm text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#81ff00]"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as any)}
               >
@@ -143,21 +142,21 @@ export default function ManageArticlesPage() {
           </div>
 
           {loading ? (
-            <p className="mt-6 text-sm text-muted-foreground">Loading...</p>
+            <p className="mt-6 text-sm text-gray-400">Loading...</p>
           ) : error ? (
             <p className="mt-6 text-sm text-red-600">{error}</p>
           ) : filtered.length === 0 ? (
-            <p className="mt-6 text-sm text-muted-foreground">No articles yet.</p>
+            <p className="mt-6 text-sm text-gray-400">No articles yet.</p>
           ) : (
             <div className="mt-6 grid gap-4">
               {filtered.map((a) => (
-                <div key={a.id} className="flex items-start justify-between gap-4 rounded-md border p-4">
+                <div key={a.id} className="flex items-start justify-between gap-4 rounded-lg border border-white/10 bg-white/5 p-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-medium">{a.title}</h3>
+                      <h3 className="font-medium text-white">{a.title}</h3>
                       <Badge variant={a.status === "published" ? "default" : "secondary"}>{a.status}</Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Updated {new Date(a.updatedAt).toLocaleString()}</p>
+                    <p className="text-xs text-gray-400 mt-1">Updated {new Date(a.updatedAt).toLocaleString()}</p>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" onClick={() => togglePublish(a)}>

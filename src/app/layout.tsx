@@ -32,8 +32,8 @@ export default function RootLayout({
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
         />
         <Navbar />
-        <main className="min-h-[calc(100vh-200px)] pt-24 pb-16">
-          <div className="container mx-auto px-4">
+        <main className="min-h-[calc(100vh-200px)]  pb-16 bg-[#101828]">
+          <div className="container mx-auto">
             {children}
           </div>
         </main>

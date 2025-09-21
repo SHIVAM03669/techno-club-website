@@ -47,20 +47,12 @@ export async function GET(
       return NextResponse.json(articleData);
     }
 
-    // If article is draft, need authentication and ownership
+    // If article is draft, require authentication (no ownership restriction)
     const user = await getCurrentUser(request);
     if (!user) {
       return NextResponse.json(
         { error: 'Authentication required to view draft article', code: 'AUTH_REQUIRED' },
         { status: 401 }
-      );
-    }
-
-    // Check ownership for draft articles
-    if (articleData.authorId !== user.id) {
-      return NextResponse.json(
-        { error: 'Permission denied', code: 'FORBIDDEN' },
-        { status: 403 }
       );
     }
 
@@ -151,11 +143,11 @@ export async function PUT(
     // Always update the updatedAt timestamp
     updates.updatedAt = new Date().toISOString();
 
-    // Update only if owned by the user
+    // Update by ID for any authenticated user (no ownership restriction)
     const updated = await db
       .update(articles)
       .set(updates)
-      .where(and(eq(articles.id, parseInt(id)), eq(articles.authorId, user.id)))
+      .where(eq(articles.id, parseInt(id)))
       .returning();
 
     if (updated.length === 0) {
@@ -199,7 +191,7 @@ export async function DELETE(
 
     const deleted = await db
       .delete(articles)
-      .where(and(eq(articles.id, parseInt(id)), eq(articles.authorId, user.id)))
+      .where(eq(articles.id, parseInt(id)))
       .returning();
 
     if (deleted.length === 0) {
