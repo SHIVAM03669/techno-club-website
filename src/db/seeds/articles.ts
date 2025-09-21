@@ -1,5 +1,6 @@
 import { db } from '@/db';
 import { user, articles } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 async function main() {
     // Check if seed user exists, if not create it
