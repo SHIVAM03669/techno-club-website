@@ -115,7 +115,7 @@ export default function MembersPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto text-white"
           >
-            Meet the passionate individuals driving innovation and sustainability at TSC
+            Meet the passionate individuals driving innovation and sustainability at TSCC
           </motion.p>
         </div>
       </motion.section>
