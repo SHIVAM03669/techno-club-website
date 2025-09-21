@@ -72,7 +72,7 @@ const teamMembers = [
     department: 'Marketing'
   },
   {
-    name: 'Dr. Rajani Mam',
+    name: 'Dr. Rajani Sajjan',
     role: 'Faculty Advisor',
     image: '/rajani mam.jpg',
     email: 'rajani.mam@example.com',
