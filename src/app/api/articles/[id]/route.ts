@@ -25,10 +25,11 @@ function parseId(id: string): number | null {
 /* -------------------------------------------------------------------------- */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseId(params.id);
+    const { id: idParam } = await context.params;
+    const id = parseId(idParam);
     if (id === null) {
       return NextResponse.json(
         { error: 'Valid article ID is required', code: 'INVALID_ID' },
@@ -83,7 +84,7 @@ export async function GET(
 /* -------------------------------------------------------------------------- */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser(request);
@@ -94,7 +95,8 @@ export async function PUT(
       );
     }
 
-    const id = parseId(params.id);
+    const { id: idParam } = await context.params;
+    const id = parseId(idParam);
     if (id === null) {
       return NextResponse.json(
         { error: 'Valid article ID is required', code: 'INVALID_ID' },
@@ -199,7 +201,7 @@ export async function PUT(
 /* -------------------------------------------------------------------------- */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser(request);
@@ -210,7 +212,8 @@ export async function DELETE(
       );
     }
 
-    const id = parseId(params.id);
+    const { id: idParam } = await context.params;
+    const id = parseId(idParam);
     if (id === null) {
       return NextResponse.json(
         { error: 'Valid article ID is required', code: 'INVALID_ID' },
