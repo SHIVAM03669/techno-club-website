@@ -11,12 +11,30 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
 
       {/* Hero Section */}
-      <section
-        className="relative h-screen flex items-center justify-center bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/hplant.jpg')", // keep your file in /public/bgheader.jpg
-        }}
-      >
+      <section className="relative h-screen flex items-center justify-center">
+  {/* Background Video */}
+  <video
+    className="absolute top-0 left-0 w-full h-full object-cover"
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src="/video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  {/* Overlay Content */}
+  <div className="relative z-10 text-white text-center">
+  <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
+            <span className="text-[#81ff00]">TECHNO</span>{" "}
+            <span className="text-white">SMART</span>{" "}
+            <span className="text-white">CAMPUS</span>{" "}
+            <span className="text-[#81ff00]">CLUB</span>
+          </h1>
+  </div>
+</section>
+
         <div
           className="fixed top-0 left-0 w-screen h-screen bg-cover bg-center -z-10 bg-[#fefae0]"/>
 
@@ -27,15 +45,10 @@ export default function LandingPage() {
           transition={{ duration: 0.8 }}
           className="relative z-10 text-center space-y-6 px-4"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            <span className="text-[#81ff00]">TECHNO</span>{" "}
-            <span className="text-white">SMART</span>{" "}
-            <span className="text-white">CAMPUS</span>{" "}
-            <span className="text-[#81ff00]">CLUB</span>
-          </h1>
 
-          <p className="text-xl text-gray-200">Ecofriendly Innovation Starts Here</p>
-          <p className="text-lg text-gray-300">Presented by MIT Art, Design & Technology University</p>
+
+          <p className="text-xl text-black">Ecofriendly Innovation Starts Here</p>
+          <p className="text-lg text-black">Presented by MIT Art, Design & Technology University</p>
 
           <Link href="/home">
             <motion.button
@@ -48,7 +61,6 @@ export default function LandingPage() {
             </motion.button>
           </Link>
         </motion.div>
-      </section>
 
 
       {/* About/Mission/Vision Section */}
@@ -331,22 +343,42 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             {[
-              "Who can join the Techno Smart Campus Club?",
-              "Do I need prior technical knowledge to join?",
-              "What kind of activities does the club organize?",
-              "Is there any membership fee?",
-              "How can I join the club?"
-            ].map((question, index) => (
+              {
+                q: "Who can join the Techno Smart Campus Club?",
+                a: "Any student of MIT ADT University from any year and department can join. We welcome beginners and experienced members alike."
+              },
+              {
+                q: "Do I need prior technical knowledge to join?",
+                a: "No. We have beginner-friendly sessions as well as advanced tracks. If you're curious and willing to learn, you're in!"
+              },
+              {
+                q: "What kind of activities does the club organize?",
+                a: "Hands-on workshops, tech bootcamps, project building, hackathons, speaker sessions, and sustainability-driven innovation challenges."
+              },
+              {
+                q: "Is there any membership fee?",
+                a: "There is no membership fee to join the club. Some special events may have optional, minimal fees, but we try to secure sponsorships."
+              },
+              {
+                q: "How can I join the club?",
+                a: "Fill out the sign-up form shared during orientations and on the homepage, and keep an eye on announcements for the next open meet."
+              }
+            ].map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white p-4 rounded-lg border border-gray-200 hover:border-[#81ff00] transition-colors cursor-pointer flex items-center justify-between"
+                className="bg-white p-4 rounded-lg border border-gray-200 hover:border-[#81ff00] transition-colors"
               >
-                <span className="text-gray-600">{question}</span>
-                <ArrowRight className="w-5 h-5 text-[#81ff00]" />
+                <div className="flex items-start gap-3">
+                  <ArrowRight className="w-5 h-5 text-[#81ff00] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-gray-800 font-medium">{item.q}</p>
+                    <p className="text-gray-500 text-sm mt-1">{item.a}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
